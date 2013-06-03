@@ -7,6 +7,8 @@
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" charset="utf-8">
 
+        var pictureSource;   // picture source
+        var destinationType; // sets the format of returned value
         // Wait for PhoneGap to connect with the device
         //
         console.log("DAVE: program start");
@@ -14,8 +16,6 @@
         $(document).ready(function () {
             console.log("DAVE: program ready");
 
-            var pictureSource;   // picture source
-            var destinationType; // sets the format of returned value
 
             // PhoneGap is ready to be used!
             //
