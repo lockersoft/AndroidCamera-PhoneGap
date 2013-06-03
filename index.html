@@ -4,119 +4,112 @@
     <title>Capture Photo</title>
     <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1"/>
     <script type="text/javascript" charset="utf-8" src="js/cordova-2.7.0.js"></script>
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" charset="utf-8">
 
         var pictureSource;   // picture source
         var destinationType; // sets the format of returned value
+
         // Wait for PhoneGap to connect with the device
         //
-        console.log("DAVE: program start");
         document.addEventListener("deviceready",onDeviceReady,false);
-        $(document).ready(function () {
-            console.log("DAVE: program ready");
 
+        // PhoneGap is ready to be used!
+        //
+        function onDeviceReady() {
+            pictureSource=navigator.camera.PictureSourceType;
+            destinationType=navigator.camera.DestinationType;
+        }
 
-            // PhoneGap is ready to be used!
+        // Called when a photo is successfully retrieved
+        //
+        function onPhotoDataSuccess(imageData) {
+            // Get image handle
             //
-            function onDeviceReady() {
-                pictureSource=navigator.camera.PictureSourceType;
-                destinationType=navigator.camera.DestinationType;
-            }
+            var smallImage = document.getElementById('smallImage');
 
-            // Called when a photo is successfully retrieved
+            // Unhide image elements
             //
-            function onPhotoDataSuccess(imageData) {
-                // Get image handle
-                //
-                var smallImage = document.getElementById('smallImage');
+            smallImage.style.display = 'block';
 
-                // Unhide image elements
-                //
-                smallImage.style.display = 'block';
-
-                // Show the captured photo
-                // The inline CSS rules are used to resize the image
-                //
-                smallImage.src = "data:image/jpeg;base64," + imageData;
-            }
-
-            // Called when a photo is successfully retrieved
+            // Show the captured photo
+            // The inline CSS rules are used to resize the image
             //
-            function onPhotoFileSuccess(imageData) {
-                // Get image handle
-                //
-                var smallImage = document.getElementById('smallImage');
+            smallImage.src = "data:image/jpeg;base64," + imageData;
+        }
 
-                // Unhide image elements
-                //
-                smallImage.style.display = 'block';
+        // Called when a photo is successfully retrieved
+        //
+        function onPhotoFileSuccess(imageData) {
+            // Get image handle
+            console.log(JSON.stringify(imageData));
 
-                // Show the captured photo
-                // The inline CSS rules are used to resize the image
-                //
-                smallImage.src = "data:image/jpeg;base64," + imageData;
-            }
-
-            // Called when a photo is successfully retrieved
+            // Get image handle
             //
-            function onPhotoURISuccess(imageURI) {
-                // Uncomment to view the image file URI
-                // console.log(imageURI);
+            var smallImage = document.getElementById('smallImage');
 
-                // Get image handle
-                //
-                var largeImage = document.getElementById('largeImage');
-
-                // Unhide image elements
-                //
-                largeImage.style.display = 'block';
-
-                // Show the captured photo
-                // The inline CSS rules are used to resize the image
-                //
-                largeImage.src = imageURI;
-            }
-
-            // A button will call this function
+            // Unhide image elements
             //
-            $("#photoWithData").on("click", function() {
-                console.log("inside photoWithData");
-                // Take picture using device camera and retrieve image as base64-encoded string
-                navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50 });
-            });
+            smallImage.style.display = 'block';
 
-            $("#photoWithURI").on("click", function() {
-                console.log("inside photoWithData");
-                navigator.camera.getPicture(onPhotoFileSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
-            });
-
-            // A button will call this function
+            // Show the captured photo
+            // The inline CSS rules are used to resize the image
             //
-            function getPhoto(source) {
-                console.log("DAVE: getPhoto");
+            smallImage.src = imageData;
+        }
 
-                // Retrieve image file location from specified source
-                navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-                    destinationType: destinationType.FILE_URI,
-                    sourceType: source });
-            }
+        // Called when a photo is successfully retrieved
+        //
+        function onPhotoURISuccess(imageURI) {
+            // Uncomment to view the image file URI
+            // console.log(imageURI);
 
-            // Called if something bad happens.
+            // Get image handle
             //
-            function onFail(message) {
-                alert('Failed because: ' + message);
-            }
+            var largeImage = document.getElementById('largeImage');
 
-        });
+            // Unhide image elements
+            //
+            largeImage.style.display = 'block';
+
+            // Show the captured photo
+            // The inline CSS rules are used to resize the image
+            //
+            largeImage.src = imageURI;
+        }
+
+        // A button will call this function
+        //
+        function capturePhotoWithData() {
+            // Take picture using device camera and retrieve image as base64-encoded string
+            navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50 });
+        }
+
+        function capturePhotoWithFile() {
+            navigator.camera.getPicture(onPhotoFileSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
+        }
+
+        // A button will call this function
+        //
+        function getPhoto(source) {
+            // Retrieve image file location from specified source
+            navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                destinationType: destinationType.FILE_URI,
+                sourceType: source });
+        }
+
+        // Called if something bad happens.
+        //
+        function onFail(message) {
+            alert('Failed because: ' + message);
+        }
 
     </script>
 </head>
 <body>
-<button id="photoWithData">Capture Photo With Image Data</button> <br>
-<button id="photoWithURI">Capture Photo With Image File URI</button> <br>
-<button id="photoLibrary" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
-<button id="photoFromAlbum" onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
+<button onclick="capturePhotoWithData();">Capture Photo With Image Data</button> <br>
+<button onclick="capturePhotoWithFile();">Capture Photo With Image File URI</button> <br>
+<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
+<button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
 <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
 <img style="display:none;" id="largeImage" src="" />
 </body>
