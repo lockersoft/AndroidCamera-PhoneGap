@@ -20,6 +20,10 @@
             destinationType=navigator.camera.DestinationType;
         }
 
+        function vibrate(){
+            navigator.notification.vibrate(2000);
+        }
+
         // Called when a photo is successfully retrieved
         //
         function onPhotoDataSuccess(imageData) {
@@ -106,8 +110,8 @@
     </script>
 </head>
 <body>
-<button onclick="capturePhotoWithData();">Capture Photo With Image Data</button> <br>
-<button onclick="capturePhotoWithFile();">Capture Photo With Image File URI</button> <br>
+<button onclick="capturePhotoWithData();vibrate();">Capture Photo With Image Data</button> <br>
+<button onclick="capturePhotoWithFile();vibrate();">Capture Photo With Image File URI</button> <br>
 <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
 <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
 <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
