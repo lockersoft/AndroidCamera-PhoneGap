@@ -9,8 +9,10 @@
 
         // Wait for PhoneGap to connect with the device
         //
+        console.log("DAVE: program start");
         document.addEventListener("deviceready",onDeviceReady,false);
         $(document).ready(function () {
+            console.log("DAVE: program ready");
 
             var pictureSource;   // picture source
             var destinationType; // sets the format of returned value
@@ -92,6 +94,8 @@
             // A button will call this function
             //
             function getPhoto(source) {
+                console.log("DAVE: getPhoto");
+
                 // Retrieve image file location from specified source
                 navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
                     destinationType: destinationType.FILE_URI,
