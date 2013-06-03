@@ -7,14 +7,13 @@
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" charset="utf-8">
 
+        // Wait for PhoneGap to connect with the device
+        //
+        document.addEventListener("deviceready",onDeviceReady,false);
         $(document).ready(function () {
 
             var pictureSource;   // picture source
             var destinationType; // sets the format of returned value
-
-            // Wait for PhoneGap to connect with the device
-            //
-            document.addEventListener("deviceready",onDeviceReady,false);
 
             // PhoneGap is ready to be used!
             //
@@ -79,12 +78,12 @@
 
             // A button will call this function
             //
-            $("#photoWithData").on("tap", function() {
+            $("#photoWithData").on("click", function() {
                 // Take picture using device camera and retrieve image as base64-encoded string
                 navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50 });
             });
 
-            $("#photoWithURI").on("tap", function() {
+            $("#photoWithURI").on("click", function() {
                 navigator.camera.getPicture(onPhotoFileSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
             });
 
@@ -108,7 +107,7 @@
     </script>
 </head>
 <body>
-<button id="photoWithData" >Capture Photo With Image Data</button> <br>
+<button id="photoWithData">Capture Photo With Image Data</button> <br>
 <button id="photoWithURI">Capture Photo With Image File URI</button> <br>
 <button id="photoLibrary" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
 <button id="photoFromAlbum" onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
