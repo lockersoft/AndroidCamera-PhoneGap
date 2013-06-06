@@ -7,116 +7,116 @@
     <script type="text/javascript" charset="utf-8" src="js/cordova-2.7.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
-        window.onload=function()
-        {
-            document.addEventListener("deviceready", onDeviceReady, false);
-        }
-    </script>
+        var deviceReadyDeferred = $.Deferred();
+        var jqmReadyDeferred = $.Deferred();
 
+        document.addEventListener("deviceReady", deviceReady, false);
 
-    <script type="text/javascript" charset="utf-8">
-
-        var pictureSource;   // picture source
-        var destinationType; // sets the format of returned value
-
-        // Wait for PhoneGap to connect with the device
-        // test
-        document.addEventListener("deviceready",onDeviceReady,false);
-
-        // PhoneGap is ready to be used!
-        //
-        function onDeviceReady() {
-            pictureSource=navigator.camera.PictureSourceType;
-            destinationType=navigator.camera.DestinationType;
+        function deviceReady() {
+            deviceReadyDeferred.resolve();
         }
 
-        // Called when a photo is successfully retrieved
-        //
-        function onPhotoDataSuccess(imageData) {
-            // Get image handle
-            //
-            var smallImage = document.getElementById('smallImage');
-
-            // Unhide image elements
-            //
-            smallImage.style.display = 'block';
-
-            // Show the captured photo
-            // The inline CSS rules are used to resize the image
-            //
-            smallImage.src = "data:image/jpeg;base64," + imageData;
-        }
-
-        // Called when a photo is successfully retrieved
-        //
-        function onPhotoFileSuccess(imageData) {
-            // Get image handle
-            console.log(JSON.stringify(imageData));
-
-            // Get image handle
-            //
-            var smallImage = document.getElementById('smallImage');
-
-            // Unhide image elements
-            //
-            smallImage.style.display = 'block';
-
-            // Show the captured photo
-            // The inline CSS rules are used to resize the image
-            //
-            smallImage.src = imageData;
-        }
-
-        // Called when a photo is successfully retrieved
-        //
-        function onPhotoURISuccess(imageURI) {
-            // Uncomment to view the image file URI
-            // console.log(imageURI);
-
-            // asdfGet image handle
-            //
-            var largeImage = document.getElementById('largeImage');
-
-            // Unhide image elements
-            //
-            largeImage.style.display = 'block';
-
-            // Show the captured photo
-            // The inline CSS rules are used to resize the image
-            //
-            largeImage.src = imageURI;
-        }
-
-        // A button will call this function
-        //
-        function capturePhotoWithData() {
-            // Take picture using device camera and retrieve image as base64-encoded string
-            navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50 });
-        }
-
-        $("#capture").on("click", function() {
-            navigator.camera.getPicture(onPhotoFileSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
+        $(document).one("mobileinit", function () {
+            jqmReadyDeferred.resolve();
         });
 
-        // A button will call this function
-        //
-        function getPhoto(source) {
-            // Retrieve image file location from specified source
-            navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-                destinationType: destinationType.FILE_URI,
-                sourceType: source });
-        }
+        $.when(deviceReadyDeferred, jqmReadyDeferred).then(doWhenBothFrameworksLoaded);
 
-        // Called if something bad happens.
-        //
-        function onFail(message) {
-            alert('Failed because: ' + message);
-        }
+        function doWhenBothFrameworksLoaded() {
+            var    pictureSource=navigator.camera.PictureSourceType;
+            var    destinationType=navigator.camera.DestinationType;
 
-        $("#captureWithData").on("click", function(){
-            capturePhotoWithData();
-        })
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoDataSuccess(imageData) {
+                // Get image handle
+                //
+                var smallImage = document.getElementById('smallImage');
+
+                // Unhide image elements
+                //
+                smallImage.style.display = 'block';
+
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                smallImage.src = "data:image/jpeg;base64," + imageData;
+            }
+
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoFileSuccess(imageData) {
+                // Get image handle
+                console.log(JSON.stringify(imageData));
+
+                // Get image handle
+                //
+                var smallImage = document.getElementById('smallImage');
+
+                // Unhide image elements
+                //
+                smallImage.style.display = 'block';
+
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                smallImage.src = imageData;
+            }
+
+            // Called when a photo is successfully retrieved
+            //
+            function onPhotoURISuccess(imageURI) {
+                // Uncomment to view the image file URI
+                // console.log(imageURI);
+
+                // asdfGet image handle
+                //
+                var largeImage = document.getElementById('largeImage');
+
+                // Unhide image elements
+                //
+                largeImage.style.display = 'block';
+
+                // Show the captured photo
+                // The inline CSS rules are used to resize the image
+                //
+                largeImage.src = imageURI;
+            }
+
+            // A button will call this function
+            //
+            function capturePhotoWithData() {
+                // Take picture using device camera and retrieve image as base64-encoded string
+                navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50 });
+            }
+
+            $("#capture").on("click", function() {
+                navigator.camera.getPicture(onPhotoFileSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
+            });
+
+            // A button will call this function
+            //
+            function getPhoto(source) {
+                // Retrieve image file location from specified source
+                navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                    destinationType: destinationType.FILE_URI,
+                    sourceType: source });
+            }
+
+            // Called if something bad happens.
+            //
+            function onFail(message) {
+                alert('Failed because: ' + message);
+            }
+
+            $("#captureWithData").on("click", function(){
+                capturePhotoWithData();
+            })
+
+        }
     </script>
+
+
 </head>
 <body>
 <button id="captureWithData">Capture Photo With Image Data</button> <br>
