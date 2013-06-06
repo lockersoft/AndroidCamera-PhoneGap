@@ -113,10 +113,13 @@
             alert('Failed because: ' + message);
         }
 
+        $("#captureWithData").on("click", function(){
+            capturePhotoWithData();
+        })
     </script>
 </head>
 <body>
-<button onclick="capturePhotoWithData();">Capture Photo With Image Data</button> <br>
+<button id="captureWithData">Capture Photo With Image Data</button> <br>
 <button id="capture">Capture Photo With Image File URI</button> <br>
 <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
 <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
