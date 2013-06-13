@@ -7,6 +7,22 @@
     <script type="text/javascript" charset="utf-8" src="js/cordova-2.7.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script>
+
+        function addContact(){
+            var contact = navigator.contacts.create();
+            contact.displayName = "Dave Jones";
+            var name = new ContactName();
+            name.givenName = "Dave";
+            name.familyName = "Jones";
+            contact.name = name;
+            var phoneNumbers = [];
+            phoneNumbers[0] = new ContactField('work', '212-555-1234', false);
+            contact.phoneNumbers = phoneNumbers;
+
+            // save
+            contact.save(onSaveSuccess,onSaveError);
+        }
+
         var deviceReadyDeferred = $.Deferred();
         var jqmReadyDeferred = $.Deferred();
 
@@ -123,6 +139,7 @@
 <button id="capture">Capture Photo With Image File URI</button> <br>
 <button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
 <button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
+<button onclick="addContact();">Add Contact</button>
 <img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
 <img style="display:none;" id="largeImage" src="" />
 </body>
