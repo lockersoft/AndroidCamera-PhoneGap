@@ -9,18 +9,18 @@
     <script>
 
         function addContact(){
-            var contact = navigator.contacts.create();
-            contact.displayName = "Dave Jones";
+            var dc = navigator.contacts.create();
+            dc.displayName = "Daves Pizza";
             var name = new ContactName();
             name.givenName = "Dave";
-            name.familyName = "Jones";
-            contact.name = name;
+            name.familyName = "Pizza";
+            dc.name = name;
             var phoneNumbers = [];
             phoneNumbers[0] = new ContactField('work', '212-555-1234', false);
-            contact.phoneNumbers = phoneNumbers;
+            dc.phoneNumbers = phoneNumbers;
 
             // save
-            contact.save(onSaveSuccess,onSaveError);
+            dc.save();
         }
 
         var deviceReadyDeferred = $.Deferred();
